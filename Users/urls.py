@@ -6,4 +6,5 @@ urlpatterns = [
     path('', views.dashboard, name="dashboard"),
     path('accounts/', include('django.contrib.auth.urls')),
     # the above will open up path to login, logout and basically everything which has a template in 'registration'
+    path('register/', views.register, name='register'),
 ]

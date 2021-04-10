@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -55,8 +55,7 @@ ROOT_URLCONF = 'User_Management.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'Users/templates']
-        ,
+        'DIRS': [BASE_DIR / 'Users/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -124,5 +123,12 @@ STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = "dashboard"
 LOGOUT_REDIRECT_URL = "dashboard"
 
-EMAIL_HOST = "localhost"
-EMAIL_PORT = 1025
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+DEFAULT_FROM_EMAIL = 'amanpersonal@zohomail.in'
+EMAIL_HOST = 'smtp.zoho.in'
+# Unable to use os.environ.get in PyCharm, try using main Command Prompt
+EMAIL_HOST_USER = os.environ.get('ZOHO_EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('ZOHO_EMAIL_PASS')
+
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
