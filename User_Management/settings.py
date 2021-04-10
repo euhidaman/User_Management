@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'social_django',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -63,6 +64,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -114,6 +117,16 @@ USE_L10N = True
 
 USE_TZ = True
 
+# The first backend on the list is the default one used by Django.
+# If you don’t include it here, then Django won’t be able to log in standard users.
+# The second backend is used for GitHub logins.
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.github.GithubOAuth2',
+]
+
+SOCIAL_AUTH_GITHUB_KEY = os.environ.get("GITHUB_KEY")
+SOCIAL_AUTH_GITHUB_SECRET = os.environ.get("GITHUB_SECRET")
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
@@ -126,6 +139,7 @@ LOGOUT_REDIRECT_URL = "dashboard"
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 DEFAULT_FROM_EMAIL = 'amanpersonal@zohomail.in'
 EMAIL_HOST = 'smtp.zoho.in'
+
 # Unable to use os.environ.get in PyCharm, try using main Command Prompt
 EMAIL_HOST_USER = os.environ.get('ZOHO_EMAIL_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('ZOHO_EMAIL_PASS')

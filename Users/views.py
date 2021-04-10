@@ -6,7 +6,6 @@ from Users.forms import CustomUserCreationForm
 # username - Aman
 # password - aman
 
-# https://realpython.com/django-user-management/#log-in-with-github
 
 # python -m smtpd -n -c DebuggingServer localhost:1025
 # type the above in terminal to start local smtp server
@@ -22,7 +21,9 @@ def register(request):
     elif request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            user = form.save(commit=False) # This creates an User, but it's not immediately saved
+            user.backend = 'django.contrib.auth.backends.ModelBackend'   # This associates a github backend to the above line 24 User, and thn saves it to the database
+            user.save()
             login(request, user)
             return redirect(reverse('dashboard'))
 
@@ -36,6 +37,6 @@ def register(request):
 #                 In that case, Django will attempt to create a user.
 #                 A new CustomUserCreationForm is created using the values submitted to the form, which are contained in the request.POST object.
 #
-# Lines 24 to 27: If the form is valid, then a new user is created on line 20 using form.save().
-#                 Then the user is logged in on line 26 using login().
-#                 Finally, line 27 redirects the user to the dashboard.
+# Lines 24 to 27: If the form is valid, then a new user is created on line 25 using form.save().
+#                 Then the user is logged in on line 27 using login().
+#                 Finally, line 28 redirects the user to the dashboard.
